@@ -1,0 +1,61 @@
+<div class="main-container">
+    <div class="form-container" id="signInForm">
+        <div>
+            <p class="title">Sign in</p>
+            <p class="description-text">If you don’t have an account <br>
+                You can <span class="bold blue cursor" [routerLink]="['/registration-page']"> Register
+                    here !</span>
+            </p>
+        </div>
+
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <div class="input-box">
+                <label class="label-text" for="email">Email</label>
+                <div class="input-wrapper">
+                    <img src="assets/image/icon-email.png" alt="call">
+                    <input type="email" formControlName="email" id="email" placeholder="Enter your email address">
+                </div>
+                <p class="error-msg" *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.errors?.['required']">Email is required.</p>
+                <p class="error-msg" *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.errors?.['email']">Please enter a valid email address.</p>
+            </div>
+            <div class="input-box">
+                <label class="label-text" for="pass">Password</label>
+                <div class="input-wrapper">
+                    <img src="assets/image/icon-pass.png" alt="call">
+                    <input [type]="hidePassword ? 'password' : 'text'" formControlName="password" id="pass" placeholder="Enter your Password" maxlength="8">
+                    <img [src]="hidePassword ? 'assets/image/icon-hide.png' : 'data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23999999%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M1%2012s4-8%2011-8%2011%208%2011%208-4%208-11%208-11-8-11-8z%22%3E%3C%2Fpath%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%223%22%3E%3C%2Fcircle%3E%3C%2Fsvg%3E'" alt="toggle password visibility" (click)="togglePasswordVisibility()" style="cursor: pointer; width: 20px; height: 20px;">
+                </div>
+                <p class="error-msg" *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.errors?.['required']">Password is required.</p>
+                <p class="error-msg" *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.errors?.['minlength']">Password must be at least 8 characters.</p>
+                <div class="text-wrapper">
+                    <input type="checkbox" name="remember" checked>
+                    <span>Remember Me</span>
+                    <span class="forgot-text">Forgot Password</span>
+                </div>
+            </div>
+            <button type="submit" id="btnSignIn" class="submitBtn">Login</button>
+        </form>
+
+        <div>
+            <p class="continue-text">or continue with</p>
+            <div class="icons-wrapper">
+                <img src="assets/image/facebook.png" alt="call" class="call-icon">
+                <img src="assets/image/apple.png" alt="call" class="call-icon">
+                <img src="assets/image/google.png" alt="call" class="call-icon">
+            </div>
+        </div>
+        
+    </div>
+    <div class="image-container">
+        <div class="callicon-text-wrapper">
+            <img src="assets/image/icon-call.png" alt="call" class="call-icon">
+            <p class="white">+94 0116 789 754</p>
+        </div>
+        <img class="background-image" src="assets/image/landing-image.png" alt="landing Image">
+        <div class="bottom-text-wrapper">
+            <span class="big-title white">Sign in to Todo</span><br>
+            <span class="white">Store your daily task information</span>
+        </div>
+
+    </div>
+</div>

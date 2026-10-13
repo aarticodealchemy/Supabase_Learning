@@ -1,0 +1,48 @@
+.image-container {
+    width: 100vw;
+    height: 100vh;
+    border-radius: 0;
+    align-items: center;
+
+}
+.welcome-container{
+    max-width: 50%;
+    margin: 10px auto;
+}
+.welcome-container img{
+    max-width: 100%;
+}
+.callicon-text-wrapper{
+    justify-self: flex-end;
+}
+.welcome-text{
+    margin-top: 50px;
+    text-align: center;
+}
+.anim-text{
+    animation-duration: 3s;
+    animation-name: animation;
+    animation-iteration-count: infinite;
+    color: white;
+    font-size: 24px;
+    text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;
+}
+@keyframes animation {
+    0%{color: white; font-size: 16px;}
+    50%{color: #74bfeb; font-size: 24px;}
+    100%{color: white; font-size: 16px;}
+}
+@media screen and (max-width: 620px) {
+    .welcome-container{
+        max-width: 90%;
+        margin: 10px auto;
+    }
+    .anim-text{
+        font-size: 20px;
+    }
+}
+@media screen and (height = 600px) {
+    .image-container{
+        height: max-content;
+    }
+}

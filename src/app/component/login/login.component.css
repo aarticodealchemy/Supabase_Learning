@@ -1,0 +1,28 @@
+.icons-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    padding: 10px;
+}
+.continue-text {
+    text-align: center;
+    color: #B5B5B5;
+}
+.text-wrapper{
+    margin: 20px 0;
+    font-size: 12px;
+   
+}
+.text-wrapper span{
+    opacity: .7;
+}
+.text-wrapper .forgot-text {
+    float: right;      
+}  
+
+@media screen and (max-width: 620px) {
+    .image-container{
+        display: none   ;
+    }
+}

@@ -1,0 +1,376 @@
+<div class="page-container">
+  <!-- Top Navigation & Header -->
+  <header class="hub-header">
+    <div class="header-content">
+      <div class="brand-row">
+        <div class="supabase-badge">
+          <span class="status-dot"></span>
+          <span>Supabase PostgreSQL Live</span>
+        </div>
+        <button
+          type="button"
+          class="btn-refresh"
+          (click)="refreshAll()"
+          title="Reload all data"
+          [disabled]="testService.loading() || testService.projectsLoading()"
+        >
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+          </svg>
+          <span>Refresh Data</span>
+        </button>
+      </div>
+
+      <h1 class="page-title">Supabase Integration Hub</h1>
+      <p class="page-subtitle">
+        Real-time database records, schema validations, and relational project tasks.
+      </p>
+
+      <!-- Stats Overview Banner -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon stat-icon-records">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <ellipse cx="12" cy="5" rx="9" ry="3"/>
+              <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
+              <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+            </svg>
+          </div>
+          <div class="stat-info">
+            <span class="stat-label">Total Records</span>
+            <span class="stat-value">{{ totalRecords() }}</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon stat-icon-projects">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+            </svg>
+          </div>
+          <div class="stat-info">
+            <span class="stat-label">Projects</span>
+            <span class="stat-value">{{ totalProjects() }}</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon stat-icon-tasks">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 11l3 3L22 4"/>
+              <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+            </svg>
+          </div>
+          <div class="stat-info">
+            <span class="stat-label">Total Tasks</span>
+            <span class="stat-value">{{ totalTasks() }}</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon stat-icon-progress">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+          </div>
+          <div class="stat-info">
+            <span class="stat-label">Completed</span>
+            <span class="stat-value">{{ completedTasks() }}/{{ totalTasks() }} <small>({{ taskCompletionPercent() }}%)</small></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content 2-Column Grid -->
+  <main class="dashboard-grid">
+    <!-- COLUMN 1: Integration Test Records -->
+    <section class="dashboard-column">
+      <div class="section-card composer-card">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="pill-badge" [class.editing]="editingRecordId()">
+              {{ editingRecordId() ? 'Editing' : 'Create' }}
+            </span>
+            <h2 class="card-heading">
+              {{ editingRecordId() ? 'Edit Record' : 'Add New Record' }}
+            </h2>
+          </div>
+          @if (editingRecordId()) {
+            <span class="editing-indicator">ID: {{ editingRecordId() }}</span>
+          }
+        </div>
+
+        <div class="composer-form">
+          <div class="input-container">
+            <input
+              type="text"
+              class="custom-input"
+              placeholder="Type your message here..."
+              [value]="message()"
+              (input)="message.set($any($event.target).value)"
+              (keydown.enter)="saveMessage()"
+              [disabled]="testService.saving()"
+            />
+          </div>
+
+          <div class="form-actions">
+            <button
+              type="button"
+              class="btn btn-primary"
+              (click)="saveMessage()"
+              [disabled]="testService.saving() || !message().trim()"
+            >
+              @if (testService.saving()) {
+                <span class="spinner-small"></span>
+                <span>Saving...</span>
+              } @else {
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+                  <polyline points="17 21 17 13 7 13 7 21"/>
+                  <polyline points="7 3 7 8 15 8"/>
+                </svg>
+                <span>{{ editingRecordId() ? 'Update Record' : 'Save Record' }}</span>
+              }
+            </button>
+
+            @if (editingRecordId()) {
+              <button
+                type="button"
+                class="btn btn-secondary"
+                (click)="cancelEditing()"
+                [disabled]="testService.saving()"
+              >
+                Cancel
+              </button>
+            }
+          </div>
+        </div>
+
+        @if (testService.error(); as error) {
+          <div class="alert-box alert-error" role="alert">
+            <svg class="alert-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="8" x2="12" y2="12"/>
+              <line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+            <div class="alert-message">{{ error }}</div>
+          </div>
+        }
+      </div>
+
+      <!-- Records Feed Card -->
+      <div class="section-card">
+        <div class="card-header">
+          <div class="card-title-group">
+            <div class="title-with-count">
+              <h2 class="card-heading">PostgreSQL Records</h2>
+              <span class="count-badge">{{ testService.records().length }}</span>
+            </div>
+            <p class="card-subheading">Live rows from table <code>integration_test</code></p>
+          </div>
+        </div>
+
+        <div class="records-content">
+          @if (testService.loading()) {
+            <div class="loading-state">
+              <div class="spinner"></div>
+              <p>Fetching records from Supabase...</p>
+            </div>
+          } @else if (testService.records().length === 0) {
+            <div class="empty-state">
+              <div class="empty-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M20 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
+                  <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+                </svg>
+              </div>
+              <h3>No Records Yet</h3>
+              <p>Use the form above to insert your first test record.</p>
+            </div>
+          } @else {
+            <div class="records-list">
+              @for (record of testService.records(); track record.id) {
+                <article class="record-item" [class.is-editing]="editingRecordId() === record.id">
+                  <div class="record-body">
+                    <p class="record-message">{{ record.message }}</p>
+                    <div class="record-meta">
+                      <span class="meta-tag tag-id" title="{{ record.id }}">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <polyline points="16 18 22 12 16 6"/>
+                          <polyline points="8 6 2 12 8 18"/>
+                        </svg>
+                        ID: {{ record.id.slice(0, 8) }}...
+                      </span>
+                      <span class="meta-tag tag-time">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <circle cx="12" cy="12" r="10"/>
+                          <polyline points="12 6 12 12 16 14"/>
+                        </svg>
+                        {{ record.created_at | date:'medium' }}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="record-actions">
+                    <button
+                      type="button"
+                      class="action-btn btn-edit"
+                      (click)="startEditing(record.id, record.message)"
+                      [disabled]="testService.saving() || testService.loading()"
+                      title="Edit this record"
+                    >
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>
+                      </svg>
+                      <span>Edit</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      class="action-btn btn-delete"
+                      (click)="testService.deleteRecord(record.id)"
+                      [disabled]="testService.saving() || testService.loading()"
+                      title="Delete this record"
+                    >
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="3 6 5 6 21 6"/>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                      </svg>
+                      <span>Delete</span>
+                    </button>
+                  </div>
+                </article>
+              }
+            </div>
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- COLUMN 2: Projects & Related Tasks -->
+    <section class="dashboard-column">
+      <div class="section-card">
+        <div class="card-header">
+          <div class="card-title-group">
+            <div class="title-with-count">
+              <h2 class="card-heading">Projects & Tasks</h2>
+              <span class="count-badge badge-blue">{{ testService.projects().length }}</span>
+            </div>
+            <p class="card-subheading">Relational join from <code>projects</code> + <code>tasks</code></p>
+          </div>
+        </div>
+
+        <div class="projects-content">
+          @if (testService.projectsLoading()) {
+            <div class="loading-state">
+              <div class="spinner"></div>
+              <p>Loading projects & related tasks...</p>
+            </div>
+          } @else if (testService.projectsError()) {
+            <div class="alert-box alert-error" role="alert">
+              <svg class="alert-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="12" y1="8" x2="12" y2="12"/>
+                <line x1="12" y1="16" x2="12.01" y2="16"/>
+              </svg>
+              <div class="alert-message">{{ testService.projectsError() }}</div>
+            </div>
+          } @else if (testService.projects().length === 0) {
+            <div class="empty-state">
+              <div class="empty-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+                </svg>
+              </div>
+              <h3>No Projects Found</h3>
+              <p>Add rows to the <code>projects</code> table in Supabase to see them here.</p>
+            </div>
+          } @else {
+            <div class="projects-list">
+              @for (project of testService.projects(); track project.id) {
+                <article class="project-card">
+                  <div class="project-header">
+                    <div>
+                      <h3 class="project-name">{{ project.name || 'Untitled Project' }}</h3>
+                      <div class="project-id-tag">ID #{{ project.id }}</div>
+                    </div>
+                    @if (project.status) {
+                      <span
+                        class="status-pill"
+                        [class.status-active]="project.status.toLowerCase() === 'active'"
+                        [class.status-completed]="project.status.toLowerCase() === 'completed'"
+                        [class.status-pending]="project.status.toLowerCase() === 'pending'"
+                      >
+                        {{ project.status }}
+                      </span>
+                    }
+                  </div>
+
+                  @if (project.description) {
+                    <p class="project-description">{{ project.description }}</p>
+                  }
+
+                  <!-- Project Task Progress Bar -->
+                  <div class="progress-section">
+                    <div class="progress-labels">
+                      <span class="progress-title">Task Completion</span>
+                      <span class="progress-count">
+                        {{ getCompletedCount(project.tasks) }} of {{ project.tasks.length }} completed
+                        ({{ getProjectCompletion(project.tasks) }}%)
+                      </span>
+                    </div>
+                    <div class="progress-track">
+                      <div
+                        class="progress-fill"
+                        [style.width.%]="getProjectCompletion(project.tasks)"
+                      ></div>
+                    </div>
+                  </div>
+
+                  <!-- Tasks List -->
+                  <div class="tasks-container">
+                    <h4 class="tasks-heading">Tasks ({{ project.tasks.length }})</h4>
+
+                    @if (project.tasks.length === 0) {
+                      <div class="empty-tasks">
+                        <span>No tasks assigned to this project.</span>
+                      </div>
+                    } @else {
+                      <ul class="task-items">
+                        @for (task of project.tasks; track task.id) {
+                          <li class="task-item" [class.is-done]="task.is_completed">
+                            <label class="task-checkbox-label">
+                              <input
+                                type="checkbox"
+                                class="task-checkbox"
+                                [checked]="task.is_completed"
+                                (change)="
+                                  testService.toggleTaskCompletion(
+                                    task.id,
+                                    $any($event.target).checked
+                                  )
+                                "
+                              />
+                              <span class="custom-checkmark"></span>
+                              <span class="task-title">{{ task.title }}</span>
+                            </label>
+
+                            <span class="task-status-tag" [class.done]="task.is_completed">
+                              {{ task.is_completed ? 'Completed' : 'Pending' }}
+                            </span>
+                          </li>
+                        }
+                      </ul>
+                    }
+                  </div>
+                </article>
+              }
+            </div>
+          }
+        </div>
+      </div>
+    </section>
+  </main>
+</div>

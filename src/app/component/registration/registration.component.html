@@ -1,0 +1,62 @@
+<div class="main-container">
+    <div class="form-container" id="signInForm">
+        <div>
+            <p class="title">Sign up</p>
+            <p class="description-text">If you already have an account <br>
+                You can <span class="bold blue cursor" [routerLink]="['/login']"> Login here !</span>
+            </p>
+        </div>
+
+        <div class="input-box">
+            <label class="label-text" for="email">Email</label>
+            <div class="input-wrapper">
+                <img src="assets/image/icon-email.png" alt="email">
+                <input type="email" name="email" id="emial"placeholder="Enter Your email address">
+            </div>
+            <p class="error-msg" id="emailErr"></p>
+        </div>
+
+        <div class="input-box">
+            <label class="label-text" for="userName">Username</label>
+            <div class="input-wrapper">
+                <img src="assets/image/user.png" alt="user">
+                <input type="email" name="userName" id="userName" placeholder="Enter Your User name">
+            </div>
+            <p class="error-msg" id="userNameErr"></p>
+        </div>
+
+        <div class="input-box">
+            <label class="label-text" for="pass">Password</label>
+            <div class="input-wrapper">
+                <img src="assets/image/icon-pass.png" alt="call">
+                <input type="password" name="pass" id="pass" placeholder="Enter Your Password" maxlength="8">
+                <img src="assets/image/icon-hide.png" alt="hide">
+            </div>
+            <p class="error-msg" id="passErr"></p>
+        </div>
+
+        <div class="input-box">
+            <label class="label-text" for="cpass">Confirm Password</label>
+            <div class="input-wrapper">
+                <img src="assets/image/icon-pass.png" alt="call">
+                <input type="password" name="cpass" id="cpass" placeholder="Confirm Your Password" maxlength="8">
+                <img src="assets/image/icon-hide.png" alt="hide">
+            </div>
+            <p class="error-msg" id="cpassErr"></p>
+        </div>
+        <button id="btnSignIn" class="submitBtn" [routerLink]="['/detail-page']" >Register</button>
+
+    </div>
+    <div class="image-container">
+        <div class="callicon-text-wrapper">
+            <img src="assets/image/icon-call.png" alt="call" class="call-icon">
+            <p class="white">+94 0116 789 754</p>
+        </div>
+        <img class="background-image" src="assets/image/landing-image.png" alt="landing Image">
+        <div class="bottom-text-wrapper">
+            <span class="big-title white">Siup in to Todo</span><br>
+            <span class="white">Store your daily task information</span>
+        </div>
+
+    </div>
+</div>

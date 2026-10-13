@@ -1,0 +1,223 @@
+@font-face {
+    font-family: poppins;
+    src: url(/assets/fonts/poppins_regular.ttf);
+}
+:root {
+    --primaryColor: #000842;
+    --blue: #0C21C1;
+    --white: #ffffff;
+    --black: #000000;
+    --darkGray: #999999;
+   
+}
+.background-image ,.bottom-text-wrapper{
+    --imagewidth : 65%;
+}
+
+* {
+    font-family: poppins;
+    box-sizing: border-box;
+}
+body {
+    margin: 0;
+    height: 100vh;
+}
+button {
+    cursor: pointer;
+    border: none;
+    font-family: inherit;
+}
+.label-text {
+    font-size: 16px;
+    color: var(--darkGray);
+
+}
+input[type="checkbox"] {
+    color: var(--white);
+    accent-color: var(--primaryColor);
+}
+.main-container {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-wrap: nowrap;
+    padding: 20px;
+    gap: 50px;
+}
+.form-container {
+    width: 50%;
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 40px;
+    padding: 100px 250px;
+}
+.image-container {
+    width: 50%;
+    background-color: var(--primaryColor);
+    display: flex;
+    flex-flow: column ;
+    border-radius: 15px;
+}
+.background-image {
+    width: var(--imagewidth);
+    margin: auto;
+    border: 3px solid black;
+}
+.submitBtn {
+    border-radius: 20px;
+    background-color: #0C21C1;
+    padding: 15px;
+    color: var(--white);
+    font-weight: 600;
+    font-size: 19px;
+}
+.callicon-text-wrapper {
+    display: flex;
+    gap: 4px;
+    align-self: flex-end;
+    align-items: center;
+    margin-right: 20px;
+    font-weight: 400;
+}
+.callicon-text-wrapper .call-icon {
+    width: 14px;
+    height: 14px;
+}
+.input-wrapper {
+    display: flex;
+    gap: 4px;
+    align-self: flex-end;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 3px solid var(--darkGray);
+}
+.input-wrapper input {
+    border: none;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    color: var(--primaryColor);
+    font-size: 16px;
+}
+.input-wrapper input:focus {
+    outline: none;
+}
+.input-wrapper:focus-within {
+    border-bottom: 3px solid var(--primaryColor);
+}
+::placeholder {
+    color: var(--primaryColor);
+    opacity: .7;
+}
+.white {
+    color: var(--white);
+}
+.blue {
+    color: var(--blue);
+    font-weight: 600;
+}
+.bold {
+    font-weight: bold;
+}
+.error-msg {
+    font-weight: bold;
+    font-size: 0.75rem;
+    color: red;
+    margin-top: 5px;
+    margin-block-end: 0em;
+    margin-block-start: 0em;
+}
+.title {
+    font-size: 30px;
+}
+.big-title {
+    font-size: 35px;
+    font-weight: 600;
+}
+.cursor {
+    cursor: pointer;
+}
+.bottom-text-wrapper {
+    margin-left:calc((100% - var(--imagewidth)) / 2);
+    margin-bottom: 100px;
+}
+
+@media screen and (max-width: 1600px) {
+    .main-container {
+        gap: 30px;
+    }
+    .form-container {
+        gap: 35px;
+        padding: 75px 150px;
+    }  
+}
+@media screen and (max-width: 1300px) {
+    .form-container {
+        gap: 30px;
+        padding: 65px 100px;
+    }
+    .background-image {
+        --imagewidth: 70%;
+        margin: 120px auto;
+    }
+    .big-title {
+        font-size: 30px;
+    }
+}
+@media screen and (max-width: 1000px) {
+    .main-container {
+        gap: 20px;
+        padding: 10px;
+    }
+    .form-container {
+        gap: 25px;
+        padding: 65px 50px;
+    }
+    .background-image {
+        --imagewidth: 75%;
+        margin: 100px auto;
+    }  
+}
+@media screen and (max-width: 800px) {
+    .main-container {
+        gap: 10px;
+        padding: 5px;
+    }
+    .form-container {
+        padding: 60px 30px;
+    }
+    .big-title {
+        font-size: 20px;
+    }  
+}
+@media screen and (max-width: 620px) {
+    .form-container {
+        margin: auto;
+        width: 80%;
+        gap: 20px;
+        padding: 0;
+    }
+    .submitBtn {
+        border-radius: 15px;
+        padding: 8px;        
+    }
+    .background-image {
+        --imagewidth: 80%;
+    }
+    .label-text {
+        font-size: 12px;
+    }
+    .input-wrapper input , .description-text{
+        font-size: 14px;
+    }
+}
+@media screen and (max-width: 400px) {
+    .form-container {
+        width: 90%;
+    }
+}
+@media screen and (max-height: 600px) {
+    .main-container{
+        height: max-content;
+    }
+}
