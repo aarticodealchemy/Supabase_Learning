@@ -4,11 +4,12 @@ import { LandingComponent } from './component/landing/landing.component';
 import { RegistrationComponent } from './component/registration/registration.component';
 import { DetailComponent } from './component/detail/detail.component';
 import { IntegrationTestPageComponent } from './features/integration-test/integration-test-page/integration-test-page.component';
+import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'supabase-test',
+    redirectTo: 'landing-page',
     pathMatch: 'full',
   },
   {
@@ -22,6 +23,7 @@ export const routes: Routes = [
   {
     path: 'detail-page',
     component: DetailComponent,
+    canActivate: [authGuard],
     data: {
       id: 101,
       userName: 'Arti Bhaliya',

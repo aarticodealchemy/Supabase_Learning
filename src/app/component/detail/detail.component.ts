@@ -3,6 +3,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink, Router } from '@angular/router';
 import { User } from '../../Model/user.model';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-detail',
@@ -15,6 +16,7 @@ export class DetailComponent implements OnInit{
 
   activeRoute: ActivatedRoute = inject(ActivatedRoute);
   router: Router = inject(Router);
+  authService = inject(AuthService);
   user?: User;
 
   ngOnInit(): void {
@@ -25,6 +27,12 @@ export class DetailComponent implements OnInit{
       // this.router.getCurrentNavigation()
       
     })
+  }
+
+
+  onLogout(): void {
+    this.authService.signOut();
+    this.router.navigate(['/login']);
   }
 
 }

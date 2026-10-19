@@ -1,9 +1,30 @@
 <p class="title">Detail Page</p>
+<br><br>
+
+@if (authService.user(); as user) {
+  <section class="user-profile">
+    <h2>Welcome, {{ user.user_metadata['userName'] || 'User' }}!</h2>
+
+    <p><strong>User ID:</strong> {{ user.id }}</p>
+
+    <p><strong>Email:</strong> {{ user.email }}</p>
+
+    <p>
+      <strong>Username:</strong>
+      {{ user.user_metadata['userName'] || 'Not provided' }}
+    </p>
+  </section>
+} @else {
+  <p>Loading user information...</p>
+}
+
+<br><br>
 <button class="submitBtn" [routerLink]="['/landing-page']">Landing Page</button>
 <br><br>
 <button class="submitBtn" [routerLink]="['/login']">Login Page</button>
 <br><br>
 <button class="submitBtn" [routerLink]="['/registration-page']">Registration Page</button>
+<button class="submitBtn" (click)="onLogout()">Logout</button>
 
 <!-- <p class="title">Id : {{user.id}} <br>
     Name : {{user.userName}} <br>
