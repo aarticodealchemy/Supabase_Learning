@@ -1,6 +1,7 @@
-import { Injectable, inject, signal } from '@angular/core';
+import { Injectable, PLATFORM_ID, inject, signal } from '@angular/core';
 import type { Session, User } from '@supabase/supabase-js';
 import { SupabaseService } from './supabase.service';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
@@ -12,6 +13,7 @@ export class AuthService {
   readonly session = signal<Session | null>(null);
   readonly loading = signal(false);
   readonly error = signal<string | null>(null);
+  private readonly platformId = inject(PLATFORM_ID);
 
   constructor() {
     // Restore an existing browser session.
@@ -50,7 +52,12 @@ export class AuthService {
     }
   }
 
-  async signUp(email: string, password: string): Promise<boolean> {
+
+  async signUp(
+    email: string,
+    password: string,
+    userName: string,
+  ): Promise<User | null> {
     this.loading.set(true);
     this.error.set(null);
 
@@ -60,22 +67,31 @@ export class AuthService {
           email: email.trim(),
           password,
           options: {
-            emailRedirectTo: window.location.origin,
+            emailRedirectTo: isPlatformBrowser(this.platformId)
+              ? window.location.origin
+              : undefined,
+            data: {
+              userName: userName.trim(),
+            },
           },
         });
 
       if (error) {
         this.error.set(error.message);
-        return false;
+        return null;
       }
 
       this.session.set(data.session);
-      this.user.set(data.session?.user ?? null);
+      this.user.set(data.user ?? data.session?.user ?? null);
 
-      return true;
+      if (data.user && isPlatformBrowser(this.platformId)) {
+        localStorage.setItem('registered_user', JSON.stringify(data.user));
+      }
+
+      return data.user;
     } catch {
       this.error.set('Unable to register your account.');
-      return false;
+      return null;
     } finally {
       this.loading.set(false);
     }
@@ -133,4 +149,5 @@ export class AuthService {
       this.loading.set(false);
     }
   }
+
 }

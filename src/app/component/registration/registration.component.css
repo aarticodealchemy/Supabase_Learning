@@ -4,8 +4,13 @@ form {
     gap: 20px;
 }
 
+.submitBtn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
 @media screen and (max-width: 620px) {
-    .image-container{
-        display: none   ;
+    .image-container {
+        display: none;
     }
 }

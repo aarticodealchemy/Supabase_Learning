@@ -14,8 +14,12 @@
                     <img src="assets/image/icon-email.png" alt="email">
                     <input type="email" formControlName="email" id="email" placeholder="Enter Your email address">
                 </div>
-                <p class="error-msg" *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.errors?.['required']">Email is required.</p>
-                <p class="error-msg" *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.errors?.['email']">Please enter a valid email address.</p>
+                @if (registerForm.get('email')?.touched && registerForm.get('email')?.errors?.['required']) {
+                <p class="error-msg">Email is required.</p>
+                }
+                @if (registerForm.get('email')?.touched && registerForm.get('email')?.errors?.['email']) {
+                <p class="error-msg">Please enter a valid email address.</p>
+                }
             </div>
 
             <div class="input-box">
@@ -24,36 +28,66 @@
                     <img src="assets/image/user.png" alt="user">
                     <input type="text" formControlName="userName" id="userName" placeholder="Enter Your User name">
                 </div>
-                <p class="error-msg" *ngIf="registerForm.get('userName')?.touched && registerForm.get('userName')?.errors?.['required']">Username is required.</p>
-                <p class="error-msg" *ngIf="registerForm.get('userName')?.touched && registerForm.get('userName')?.errors?.['minlength']">Username must be at least 3 characters.</p>
+                @if (registerForm.get('userName')?.touched && registerForm.get('userName')?.errors?.['required']) {
+                <p class="error-msg">Username is required.</p>
+                }
+                @if (registerForm.get('userName')?.touched && registerForm.get('userName')?.errors?.['minlength']) {
+                <p class="error-msg">Username must be at least 3 characters.</p>
+                }
             </div>
 
             <div class="input-box">
                 <label class="label-text" for="pass">Password</label>
                 <div class="input-wrapper">
                     <img src="assets/image/icon-pass.png" alt="password">
-                    <input [type]="hidePassword ? 'password' : 'text'" formControlName="password" id="pass" placeholder="Enter Your Password">
-                    <img [src]="hidePassword ? 'assets/image/icon-hide.png' : 'data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23999999%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M1%2012s4-8%2011-8%2011%208%2011%208-4%208-11%208-11-8-11-8z%22%3E%3C%2Fpath%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%223%22%3E%3C%2Fcircle%3E%3C%2Fsvg%3E'" alt="toggle password visibility" (click)="togglePasswordVisibility()" style="cursor: pointer; width: 20px; height: 20px;">
+                    <input [type]="hidePassword() ? 'password' : 'text'" formControlName="password" id="pass"
+                        placeholder="Enter Your Password">
+                    <img [src]="hidePassword() ? 'assets/image/icon-hide.png' : 'data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23999999%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M1%2012s4-8%2011-8%2011%208%2011%208-4%208-11%208-11-8-11-8z%22%3E%3C%2Fpath%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%223%22%3E%3C%2Fcircle%3E%3C%2Fsvg%3E'"
+                        alt="toggle password visibility" (click)="togglePasswordVisibility()"
+                        style="cursor: pointer; width: 20px; height: 20px;">
                 </div>
-                <p class="error-msg" *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.errors?.['required']">Password is required.</p>
-                <p class="error-msg" *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.errors?.['pattern']">Password must be at least 8 characters and include at least 1 letter, 1 number, and 1 special character.</p>
+                @if (registerForm.get('password')?.touched && registerForm.get('password')?.errors?.['required']) {
+                <p class="error-msg">Password is required.</p>
+                }
+                @if (registerForm.get('password')?.touched && registerForm.get('password')?.errors?.['pattern']) {
+                <p class="error-msg">Password must be at least 8 characters and include at least 1 letter, 1 number, and
+                    1 special character.</p>
+                }
             </div>
 
             <div class="input-box">
                 <label class="label-text" for="cpass">Confirm Password</label>
                 <div class="input-wrapper">
                     <img src="assets/image/icon-pass.png" alt="confirm password">
-                    <input [type]="hideConfirmPassword ? 'password' : 'text'" formControlName="confirmPassword" id="cpass" placeholder="Confirm Your Password">
-                    <img [src]="hideConfirmPassword ? 'assets/image/icon-hide.png' : 'data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23999999%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M1%2012s4-8%2011-8%2011%208%2011%208-4%208-11%208-11-8-11-8z%22%3E%3C%2Fpath%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%223%22%3E%3C%2Fcircle%3E%3C%2Fsvg%3E'" alt="toggle confirm password visibility" (click)="toggleConfirmPasswordVisibility()" style="cursor: pointer; width: 20px; height: 20px;">
+                    <input [type]="hideConfirmPassword() ? 'password' : 'text'" formControlName="confirmPassword"
+                        id="cpass" placeholder="Confirm Your Password">
+                    <img [src]="hideConfirmPassword() ? 'assets/image/icon-hide.png' : 'data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23999999%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M1%2012s4-8%2011-8%2011%208%2011%208-4%208-11%208-11-8-11-8z%22%3E%3C%2Fpath%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%223%22%3E%3C%2Fcircle%3E%3C%2Fsvg%3E'"
+                        alt="toggle confirm password visibility" (click)="toggleConfirmPasswordVisibility()"
+                        style="cursor: pointer; width: 20px; height: 20px;">
                 </div>
-                <p class="error-msg" *ngIf="registerForm.get('confirmPassword')?.touched && registerForm.get('confirmPassword')?.errors?.['required']">Confirm password is required.</p>
-                <p class="error-msg" *ngIf="registerForm.get('confirmPassword')?.touched && registerForm.errors?.['passwordMismatch'] && !registerForm.get('confirmPassword')?.errors?.['required']">Passwords do not match.</p>
+                @if (registerForm.get('confirmPassword')?.touched &&
+                registerForm.get('confirmPassword')?.errors?.['required']) {
+                <p class="error-msg">Confirm password is required.</p>
+                }
+                @if (registerForm.get('confirmPassword')?.touched && registerForm.errors?.['passwordMismatch'] &&
+                !registerForm.get('confirmPassword')?.errors?.['required']) {
+                <p class="error-msg">Passwords do not match.</p>
+                }
             </div>
 
-            <button type="submit" id="btnSignIn" class="submitBtn">Register</button>
+            <button type="submit" id="btnSignIn" class="submitBtn" [disabled]="authService.loading()">
+                {{ authService.loading() ? 'Registering...' : 'Register' }}
+            </button>
         </form>
 
     </div>
+
+    <!-- Global Toast Component -->
+    <app-toast [show]="toast().show" [type]="toast().type" [message]="toast().message" (close)="closeToast()">
+    </app-toast>
+
+
+
     <div class="image-container">
         <div class="callicon-text-wrapper">
             <img src="assets/image/icon-call.png" alt="call" class="call-icon">
