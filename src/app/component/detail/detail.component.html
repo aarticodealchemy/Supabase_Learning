@@ -1,22 +1,25 @@
 <p class="title">Detail Page</p>
 <br><br>
 
-@if (authService.user(); as user) {
-  <section class="user-profile">
-    <h2>Welcome, {{ user.user_metadata['userName'] || 'User' }}!</h2>
 
-    <p><strong>User ID:</strong> {{ user.id }}</p>
+@if (profileService.loading()) {
+<p>Loading profile...</p>
+} @else if (profileService.error()) {
+<p role="alert">{{ profileService.error() }}</p>
+} @else if (profileService.profile()) {
+<section class="user-profile">
+  <h2>Database Profile</h2>
 
-    <p><strong>Email:</strong> {{ user.email }}</p>
+  <p><strong>Username:</strong> {{ profileService.profile()?.username || 'Not provided' }}</p>
 
-    <p>
-      <strong>Username:</strong>
-      {{ user.user_metadata['userName'] || 'Not provided' }}
-    </p>
-  </section>
+  <p><strong>Full name:</strong> {{ profileService.profile()?.full_name || 'Not provided' }}</p>
+
+  <p><strong>Profile ID:</strong> {{ profileService.profile()?.id }}</p>
+</section>
 } @else {
-  <p>Loading user information...</p>
+<p>No database profile found.</p>
 }
+
 
 <br><br>
 <button class="submitBtn" [routerLink]="['/landing-page']">Landing Page</button>
