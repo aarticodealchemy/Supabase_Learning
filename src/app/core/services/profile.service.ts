@@ -1,4 +1,3 @@
-
 import { Injectable, inject, signal } from '@angular/core';
 import { SupabaseService } from './supabase.service';
 
@@ -57,10 +56,7 @@ export class ProfileService {
     }
   }
 
-  async createProfile(
-    username: string,
-    fullName: string,
-  ): Promise<boolean> {
+  async createProfile(username: string, fullName: string): Promise<boolean> {
     this.loading.set(true);
     this.error.set(null);
 
@@ -100,10 +96,7 @@ export class ProfileService {
     }
   }
 
-  async updateProfile(
-    username: string,
-    fullName: string,
-  ): Promise<boolean> {
+  async updateProfile(username: string, fullName: string): Promise<boolean> {
     this.loading.set(true);
     this.error.set(null);
 
@@ -135,6 +128,19 @@ export class ProfileService {
       }
 
       this.profile.set(data as UserProfile);
+      const { error: metadataError } =
+        await this.supabaseService.client.auth.updateUser({
+          data: {
+            userName: username.trim(),
+          },
+        });
+
+      if (metadataError) {
+        this.error.set(
+          `Profile saved, but username metadata could not be updated: ${metadataError.message}`,
+        );
+        return false;
+      }
       return true;
     } catch {
       this.error.set('Unable to update your profile.');
