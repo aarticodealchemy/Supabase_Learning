@@ -1,36 +1,52 @@
-<p class="title">Detail Page</p>
-<br><br>
+<div class="detail-page-container">
+  <div class="detail-card">
+    <header class="detail-header">
+      <div>
+        <span class="detail-badge">Account</span>
+        <h1 class="detail-title">User Profile</h1>
+      </div>
+      <button class="btn-logout" (click)="onLogout()">Logout</button>
+    </header>
 
+    <section class="profile-card">
+      @if (profileService.loading()) {
+      <div class="profile-state">
+        <span class="spinner"></span>
+        <p>Loading profile information...</p>
+      </div>
+      } @else if (profileService.error()) {
+      <div class="profile-state error-state">
+        <p role="alert">{{ profileService.error() }}</p>
+      </div>
+      } @else if (profileService.profile()) {
+      <div class="profile-info-grid">
+        <div class="info-item">
+          <span class="info-label">Username</span>
+          <span class="info-value">{{ profileService.profile()?.username || 'Not provided' }}</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Full Name</span>
+          <span class="info-value">{{ profileService.profile()?.full_name || 'Not provided' }}</span>
+        </div>
+        <div class="info-item full-width">
+          <span class="info-label">Profile ID</span>
+          <span class="info-value code-value">{{ profileService.profile()?.id }}</span>
+        </div>
+      </div>
+      } @else {
+      <div class="profile-state">
+        <p>No database profile found.</p>
+      </div>
+      }
+    </section>
 
-@if (profileService.loading()) {
-<p>Loading profile...</p>
-} @else if (profileService.error()) {
-<p role="alert">{{ profileService.error() }}</p>
-} @else if (profileService.profile()) {
-<section class="user-profile">
-  <h2>Database Profile</h2>
-
-  <p><strong>Username:</strong> {{ profileService.profile()?.username || 'Not provided' }}</p>
-
-  <p><strong>Full name:</strong> {{ profileService.profile()?.full_name || 'Not provided' }}</p>
-
-  <p><strong>Profile ID:</strong> {{ profileService.profile()?.id }}</p>
-</section>
-} @else {
-<p>No database profile found.</p>
-}
-
-
-<br><br>
-<button class="submitBtn" [routerLink]="['/landing-page']">Landing Page</button>
-<br><br>
-<button class="submitBtn" [routerLink]="['/login']">Login Page</button>
-<br><br>
-<button class="submitBtn" [routerLink]="['/registration-page']">Registration Page</button>
-<button class="submitBtn" (click)="onLogout()">Logout</button>
-
-<!-- <p class="title">Id : {{user.id}} <br>
-    Name : {{user.userName}} <br>
-    email : {{user.email}} <br>
-    password : {{user.password}} <br>
-</p> -->
+    <nav class="detail-nav">
+      <span class="nav-label">Quick Navigation</span>
+      <div class="nav-links">
+        <a class="nav-btn" routerLink="/landing-page">Landing Page</a>
+        <a class="nav-btn" routerLink="/login">Login Page</a>
+        <a class="nav-btn" routerLink="/registration-page">Registration Page</a>
+      </div>
+    </nav>
+  </div>
+</div>

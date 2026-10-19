@@ -1,16 +1,27 @@
-<div class="image-container">
-    <div class="callicon-text-wrapper">
-        <img src="assets/image/icon-call.png" alt="call" class="call-icon">
-        <p class="white">+94 0116 789 754</p>
-    </div> 
-    <div class="welcome-container">
-        <img src="assets/image/landing-image.png" alt="landing Image">
-        <div class="welcome-text ">
-            <span class="big-title white">Welcome to Todo</span><br>
-            <span class="white">Store your daily task information</span><br>
-            <button (click)="call()">Click here..!</button>
-            <!-- <span class="white anim-text cursor" >Click here..!</span> -->
-        </div>           
-    </div>     
-</div>
+<div class="landing-page">
+    <header class="landing-header">
+        <div class="brand">
+            <span class="brand-badge">Todo App</span>
+        </div>
+        <div class="callicon-text-wrapper">
+            <img src="assets/image/icon-call.png" alt="phone" class="call-icon">
+            <span class="white">+94 0116 789 754</span>
+        </div>
+    </header>
 
+    <main class="welcome-container">
+        <div class="hero-image-wrapper">
+            <img src="assets/image/landing-image.png" alt="Todo Landing" class="hero-img">
+        </div>
+
+        <div class="welcome-text">
+            <h1 class="big-title white">Organize Your Tasks with Ease</h1>
+            <p class="hero-subtitle">A clean and intuitive task management experience designed for your everyday productivity.</p>
+            
+            <div class="hero-actions">
+                <button type="button" class="btn-primary" (click)="call()">Get Started</button>
+                <a routerLink="/registration-page" class="btn-secondary">Create Account</a>
+            </div>
+        </div>
+    </main>
+</div>

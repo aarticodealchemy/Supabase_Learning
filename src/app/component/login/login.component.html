@@ -39,10 +39,13 @@
                 <p class="error-msg">Password must be at least 8 characters.</p>
                 }
                 <div class="text-wrapper">
-                    <input type="checkbox" name="remember" checked>
-                    <span>Remember Me</span>
-                    <span class="forgot-text">Forgot Password</span>
+                    <label>
+                        <input type="checkbox" name="remember" checked>
+                        <span>Remember me</span>
+                    </label>
+                    <span class="forgot-text">Forgot Password?</span>
                 </div>
+
             </div>
             @if (authService.error(); as error) {
             <p class="error-msg" role="alert"> {{ error }} </p>
